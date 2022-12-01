@@ -1,4 +1,4 @@
-package com.game.models;
+package com.game.models.Field;
 
 public enum CellValue {
     EMPTY,

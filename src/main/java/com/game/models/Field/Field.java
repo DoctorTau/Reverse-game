@@ -1,6 +1,7 @@
-package com.game.models;
+package com.game.models.Field;
 
 import java.util.ArrayList;
+
 
 public class Field {
     ArrayList<ArrayList<Cell>> field;
@@ -10,7 +11,7 @@ public class Field {
         for (int i = 0; i < 8; i++) {
             field.add(new ArrayList<Cell>());
             for (int j = 0; j < 8; j++) {
-                field.get(i).add(new Cell());
+                field.get(i).add(new Cell(i, j));
             }
         }
 
