@@ -8,7 +8,13 @@ public class ConsoleOutputter implements IOutputer {
     @Override
     public void fieldOutput(Field field) {
         String fieldString = getFieldString(field);
+        clearConsole();
         System.out.println(fieldString);
+    }
+
+    public void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public String getFieldString(Field field) {
