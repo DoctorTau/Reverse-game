@@ -50,6 +50,44 @@ public class Field {
         field.get(x).get(y).setValue(value);
     }
 
+    public void updateFieldAfterMove(Cell newCell) {
+        if (newCell.getValue() != CellValue.BLACK && newCell.getValue() != CellValue.WHITE) {
+            throw new IllegalArgumentException("Invalid cell!");
+        }
+        Coordinates cellCoordinates = newCell.getCoordinates();
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                Coordinates direction = new Coordinates(i, j);
+                recolorIfNeeded(cellCoordinates.add(direction), direction, newCell.getValue());
+            }
+        }
+    }
+
+    private Boolean recolorIfNeeded(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
+        if (currentCoordinates.getX() < 0 || currentCoordinates.getX() > 7 || currentCoordinates.getY() < 0
+                || currentCoordinates.getY() > 7) {
+            return false;
+        }
+        Cell cell = getCell(currentCoordinates.getX(), currentCoordinates.getY());
+        if (cell.getValue() != CellValue.BLACK && cell.getValue() != CellValue.WHITE) {
+            return false;
+        }
+
+        if (cell.getValue() != color) {
+            cell.setValue(color);
+            return true;
+        }
+        Coordinates nextCoordinates = currentCoordinates.add(direction);
+        if (recolorIfNeeded(nextCoordinates, direction, color)) {
+            cell.setValue(color);
+            return true;
+        }
+        return false;
+    }
+
     private void setStartPosition() {
         field.get(3).get(3).setValue(CellValue.WHITE);
         field.get(4).get(4).setValue(CellValue.WHITE);

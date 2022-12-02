@@ -22,6 +22,10 @@ public class Cell {
         this.value = value;
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
     public int getXCoordinate() {
         return coordinates.getX();
     }

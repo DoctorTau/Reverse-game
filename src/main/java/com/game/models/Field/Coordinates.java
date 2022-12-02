@@ -16,4 +16,8 @@ public class Coordinates {
     public int getY() {
         return y;
     }
+
+    public Coordinates add(Coordinates direction) {
+        return new Coordinates(x + direction.getX(), y + direction.getY());
+    }
 }
