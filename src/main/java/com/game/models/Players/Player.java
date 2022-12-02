@@ -8,6 +8,7 @@ import com.game.models.Input.IInputer;
 public abstract class Player {
     protected CellValue color;
     protected Field field;
+    protected int score;
 
     public Player(CellValue color, Field field) {
         this.color = color;

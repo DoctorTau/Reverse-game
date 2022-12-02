@@ -2,15 +2,17 @@ package com.game.models.Field;
 
 import java.util.ArrayList;
 
-
 public class Field {
+    int size;
+
     ArrayList<ArrayList<Cell>> field;
 
-    public Field() {
+    public Field(int size) {
+        this.size = size;
         field = new ArrayList<ArrayList<Cell>>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < size; i++) {
             field.add(new ArrayList<Cell>());
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < size; j++) {
                 field.get(i).add(new Cell(i, j));
             }
         }
@@ -18,8 +20,16 @@ public class Field {
         setStartPosition();
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public ArrayList<ArrayList<Cell>> getField() {
         return field;
+    }
+
+    public Cell getCell(int x, int y) {
+        return field.get(x).get(y);
     }
 
     public void setValue(int x, int y, CellValue value) {
