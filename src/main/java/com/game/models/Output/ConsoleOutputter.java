@@ -1,7 +1,11 @@
 package com.game.models.Output;
 
+import java.util.ArrayList;
+
 import com.game.models.Field.Cell;
 import com.game.models.Field.Field;
+import com.game.models.Menu.MainMenu;
+import com.game.models.Menu.MenuItem;
 
 public class ConsoleOutputter implements IOutputer {
 
@@ -51,6 +55,21 @@ public class ConsoleOutputter implements IOutputer {
             case EMPTY:
                 result += " ";
                 break;
+        }
+        return result;
+    }
+
+    @Override
+    public void menuOutput(MainMenu menu) {
+        String result = getMenuAsString(menu);
+        System.out.println(result);
+    }
+
+    public String getMenuAsString(MainMenu menu) {
+        ArrayList<MenuItem> menuItems = menu.getMenuItems();
+        String result = "";
+        for (int i = 0; i < menuItems.size(); i++) {
+            result += (i + 1) + ". " + menuItems.get(i).getTitle() + "\n";
         }
         return result;
     }

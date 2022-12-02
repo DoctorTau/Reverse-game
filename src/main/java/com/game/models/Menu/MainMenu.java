@@ -12,7 +12,7 @@ public class MainMenu {
         this.stage = stage;
     }
 
-    public ArrayList<MenuItem> getMenuitems() {
+    public ArrayList<MenuItem> getMenuItems() {
         return menuItems;
     }
 
