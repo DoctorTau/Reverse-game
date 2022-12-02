@@ -1,21 +1,18 @@
 package com.game.models.Menu;
 
+import java.util.ArrayList;
+
 import com.game.models.GameStage;
 
 public class MainMenu {
     private GameStage stage;
-    private final String[] menuItems = {
-            "Game with human",
-            "Game with AI (easy)",
-            "Game with AI (hard)",
-            "Exit"
-    };
+    private final ArrayList<MenuItem> menuItems = MenuItem.getItemsForMainMenu();
 
     public MainMenu(GameStage stage) {
         this.stage = stage;
     }
 
-    public String[] getMenuitems() {
+    public ArrayList<MenuItem> getMenuitems() {
         return menuItems;
     }
 
