@@ -7,7 +7,7 @@ import com.game.models.Field.Coordinates;
 public class ConsoleInputer implements IInputer {
     private static final String INPUT_MESSAGE = "Enter cell number: ";
     private static final String INCORRECT_CELL_INPUT_MESSAGE = "Entered cell number is incorrect. Try again: ";
-    private static Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public Coordinates getCell() {
@@ -20,6 +20,8 @@ public class ConsoleInputer implements IInputer {
             isCorrectInput = CheckInput(cell);
             if (isCorrectInput == false) {
                 System.out.print(INCORRECT_CELL_INPUT_MESSAGE);
+            } else {
+                break;
             }
         }
 
@@ -27,10 +29,9 @@ public class ConsoleInputer implements IInputer {
     }
 
     private Coordinates parseInput(String input) {
-        String cell = scanner.next();
-        int x = cell.charAt(0) - 'a';
-        int y = cell.charAt(1) - '1';
-        Coordinates coordinates = new Coordinates(x, y);
+        int x = input.charAt(0) - 'a';
+        int y = input.charAt(1) - '1';
+        Coordinates coordinates = new Coordinates(y, x);
         return coordinates;
     }
 

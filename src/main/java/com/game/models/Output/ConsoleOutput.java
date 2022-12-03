@@ -7,7 +7,7 @@ import com.game.models.Field.Field;
 import com.game.models.Menu.MainMenu;
 import com.game.models.Menu.MenuItem;
 
-public class ConsoleOutputter implements IOutputer {
+public class ConsoleOutput implements IOutputer {
 
     @Override
     public void fieldOutput(Field field) {

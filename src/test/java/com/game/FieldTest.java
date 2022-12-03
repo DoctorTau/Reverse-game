@@ -17,6 +17,8 @@ public class FieldTest {
         field.setValue(2, 3, CellValue.BLACK);
         field.updateFieldAfterMove(field.getCell(2, 3));
         assertEquals(CellValue.BLACK, field.getCell(3, 3).getValue());
+        assertEquals(CellValue.EMPTY, field.getCell(2, 2).getValue());
+        assertEquals(CellValue.WHITE, field.getCell(4, 4).getValue());
     }
 
     /**
@@ -25,9 +27,11 @@ public class FieldTest {
     @Test
     public void updateFieldAfterMoveTest() {
         Field field = new Field(8);
-        field.setValue(2, 2, CellValue.BLACK);
-        field.updateFieldAfterMove(field.getCell(2, 2));
-        assertEquals(CellValue.BLACK, field.getCell(3, 3).getValue());
+        field.setValue(3, 2, CellValue.BLACK);
+        field.updateFieldAfterMove(field.getCell(3, 2));
+        field.setValue(2, 4, CellValue.WHITE);
+        field.updateFieldAfterMove(field.getCell(2, 4));
+        assertEquals(CellValue.WHITE, field.getCell(3, 4).getValue());
     }
 
 }
