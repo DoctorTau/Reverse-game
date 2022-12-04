@@ -2,8 +2,11 @@ package com.game;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Set;
+
 import org.junit.Test;
 
+import com.game.models.Field.Cell;
 import com.game.models.Field.CellValue;
 import com.game.models.Field.Field;
 
@@ -34,4 +37,13 @@ public class FieldTest {
         assertEquals(CellValue.WHITE, field.getCell(3, 4).getValue());
     }
 
+    /**
+     * Test getCellsForNextMove method of Field class.
+     */
+    @Test
+    public void getCellsForNextMoveTest() {
+        Field field = new Field(8);
+        Set<Cell> cellsForNextMove = field.getCellsForNextMove(CellValue.BLACK);
+        assertEquals(4, cellsForNextMove.size());
+    }
 }

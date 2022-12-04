@@ -1,6 +1,8 @@
 package com.game.models.Field;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Field {
     int size;
@@ -50,6 +52,74 @@ public class Field {
         field.get(x).get(y).setValue(value);
     }
 
+    public static CellValue getOppositeCellValue(CellValue value) {
+        if (value == CellValue.BLACK) {
+            return CellValue.WHITE;
+        } else if (value == CellValue.WHITE) {
+            return CellValue.BLACK;
+        } else {
+            throw new IllegalArgumentException("Invalid value!");
+        }
+    }
+
+    public Set<Cell> getCellsForNextMove(CellValue value) {
+        CellValue oppositeCellValue = getOppositeCellValue(value);
+        Set<Cell> result = new HashSet<Cell>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Cell cell = field.get(i).get(j);
+                if (cell.getValue() == oppositeCellValue) {
+                    Set<Cell> cellSurroundings = getCellSurroundings(cell);
+                    leaveOnlyEmptyCells(cellSurroundings);
+                    leaveOnlyChangeColorCells(oppositeCellValue, cell, cellSurroundings);
+                    result.addAll(cellSurroundings);
+                }
+            }
+        }
+        return result;
+    }
+
+    private void leaveOnlyChangeColorCells(CellValue oppositeCellValue, Cell cell, Set<Cell> cellSurroundings) {
+        Set<Cell> cellsToRemove = new HashSet<Cell>();
+        for (Cell cellSurround : cellSurroundings) {
+            Coordinates cellSurroundCoordinates = cellSurround.getCoordinates();
+            Coordinates direction = cell.getCoordinates().subtract(cellSurroundCoordinates);
+            if (!checkIfCellCanBeChanged(cell.getCoordinates(), direction, oppositeCellValue)) {
+                cellsToRemove.add(cellSurround);
+            }
+        }
+        cellSurroundings.removeAll(cellsToRemove);
+    }
+
+    private void leaveOnlyEmptyCells(Set<Cell> result) {
+        Set<Cell> cellsToRemove = new HashSet<Cell>();
+        for (Cell cell : result) {
+            if (cell.getValue() != CellValue.EMPTY) {
+                cellsToRemove.add(cell);
+            }
+        }
+        result.removeAll(cellsToRemove);
+    }
+
+    private Set<Cell> getCellSurroundings(Cell cell) {
+        Coordinates cellCoordinates = cell.getCoordinates();
+        Set<Cell> result = new HashSet<Cell>();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                int x = cellCoordinates.getX() + i;
+                int y = cellCoordinates.getY() + j;
+                if (x >= 0 && x < size && y >= 0 && y < size) {
+                    result.add(field.get(x).get(y));
+                }
+            }
+        }
+
+        return result;
+    }
+
     public void updateFieldAfterMove(Cell newCell) {
         if (newCell.getValue() != CellValue.BLACK && newCell.getValue() != CellValue.WHITE) {
             throw new IllegalArgumentException("Invalid cell!");
@@ -66,26 +136,40 @@ public class Field {
         }
     }
 
-    private Boolean recolorIfNeeded(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
-        if (currentCoordinates.getX() < 0 || currentCoordinates.getX() > 7 || currentCoordinates.getY() < 0
-                || currentCoordinates.getY() > 7) {
-            return false;
+    private Cell getColoredCell(Coordinates coordinates) {
+        if (coordinates.getX() < 0 || coordinates.getX() > 7 || coordinates.getY() < 0
+                || coordinates.getY() > 7) {
+            return null;
         }
-        Cell cell = getCell(currentCoordinates.getX(), currentCoordinates.getY());
+        Cell cell = getCell(coordinates.getX(), coordinates.getY());
         if (cell.getValue() != CellValue.BLACK && cell.getValue() != CellValue.WHITE) {
+            return null;
+        }
+        return cell;
+    }
+
+    private Boolean checkIfCellCanBeChanged(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
+        Cell cell = getColoredCell(currentCoordinates);
+        if (cell == null) {
             return false;
         }
-
         if (cell.getValue() != color) {
-            cell.setValue(color);
             return true;
         }
         Coordinates nextCoordinates = currentCoordinates.add(direction);
-        if (recolorIfNeeded(nextCoordinates, direction, color)) {
-            cell.setValue(color);
-            return true;
+        return checkIfCellCanBeChanged(nextCoordinates, direction, color);
+    }
+
+    private void recolorIfNeeded(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
+        Cell cell = getColoredCell(currentCoordinates);
+        if (cell == null) {
+            return;
         }
-        return false;
+        if (checkIfCellCanBeChanged(currentCoordinates, direction, color)) {
+            cell.setValue(color);
+            Coordinates nextCoordinates = currentCoordinates.add(direction);
+            recolorIfNeeded(nextCoordinates, direction, color);
+        }
     }
 
     private void setStartPosition() {

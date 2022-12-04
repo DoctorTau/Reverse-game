@@ -17,7 +17,23 @@ public class Coordinates {
         return y;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public Coordinates add(Coordinates direction) {
         return new Coordinates(x + direction.getX(), y + direction.getY());
+    }
+
+    public Coordinates subtract(Coordinates direction) {
+        return new Coordinates(x - direction.getX(), y - direction.getY());
+    }
+    
+    public Coordinates getNegCoordinates() {
+        return new Coordinates(-x, -y);
     }
 }
