@@ -26,13 +26,15 @@ public class Game {
     }
 
     private void startGame() {
-        this.field = new Field(8);
+        this.field = new Field(8, gameInterface);
         gameInterface.setField(field);
     }
 
     private void gameCycle() {
         while (true) {
+            field.saveFieldToHistory();
             playerMove(player1);
+            field.saveFieldToHistory();
             playerMove(player2);
         }
     }

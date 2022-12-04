@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.game.models.GameInterface.GameInterface;
+
 public class Field {
     int size;
 
+    GameInterface gameInterface;
+
     ArrayList<ArrayList<Cell>> field;
     Set<Cell> possibleMoves = new HashSet<>();
+    ArrayList<ArrayList<ArrayList<Cell>>> history = new ArrayList<>();
 
     public Field(int size) {
         this.size = size;
@@ -22,6 +27,31 @@ public class Field {
 
         setStartPosition();
         markPossibleMoves(CellValue.BLACK);
+    }
+
+    public Field(int size, GameInterface gameInterface) {
+        this.size = size;
+        this.gameInterface = gameInterface;
+        field = new ArrayList<ArrayList<Cell>>();
+        for (int i = 0; i < size; i++) {
+            field.add(new ArrayList<Cell>());
+            for (int j = 0; j < size; j++) {
+                field.get(i).add(new Cell(i, j));
+            }
+        }
+
+        setStartPosition();
+        markPossibleMoves(CellValue.BLACK);
+    }
+
+    public Field clone() {
+        Field result = new Field(size);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                result.getCell(i, j).setValue(getCell(i, j).getValue());
+            }
+        }
+        return result;
     }
 
     public int getSize() {
@@ -214,6 +244,18 @@ public class Field {
         getCell(coordinates.getX(), coordinates.getY()).setValue(cell.getValue());
     }
 
+    public void saveFieldToHistory() {
+        ArrayList<ArrayList<Cell>> fieldCopy = new ArrayList<ArrayList<Cell>>();
+        for (int i = 0; i < size; i++) {
+            ArrayList<Cell> row = new ArrayList<Cell>();
+            for (int j = 0; j < size; j++) {
+                row.add(field.get(i).get(j).clone());
+            }
+            fieldCopy.add(row);
+        }
+        history.add(fieldCopy);
+    }
+
     public void markPossibleMoves(CellValue value) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -231,7 +273,24 @@ public class Field {
         }
     }
 
+    public void undo() {
+        if (history.size() >= 1) {
+            field = history.get(history.size() - 1);
+            history.remove(history.size() - 1);
+        }
+    }
+
+    public void undo(int steps) {
+        for (int i = 0; i < steps; i++) {
+            undo();
+        }
+    }
+
     public Set<Cell> getCellsForNextMove() {
         return possibleMoves;
+    }
+
+    public void fieldOut() {
+        gameInterface.showField();
     }
 }

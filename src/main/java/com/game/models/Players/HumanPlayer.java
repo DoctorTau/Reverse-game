@@ -14,6 +14,9 @@ public class HumanPlayer extends Player {
     @Override
     public Cell makeMove(Field field, IGameInput input) {
         Cell cell = input.getCell(field);
+        if (cell == null) {
+            return null;
+        }
         cell.setValue(color);
 
         return cell;

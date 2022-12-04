@@ -23,8 +23,15 @@ public class ConsoleInput implements IGameInput {
         Coordinates cellCoordinates = null;
         while (isCorrectInput == false) {
             String input = scanner.nextLine();
-            cellCoordinates = parseInput(input);
-            isCorrectInput = CheckInput(cellCoordinates, field);
+            if (input.equals("r")) {
+                field.undo(4);
+                field.fieldOut();
+                continue;
+            }
+            if (input.length() != 1) {
+                cellCoordinates = parseInput(input);
+                isCorrectInput = CheckInput(cellCoordinates, field);
+            }
             if (isCorrectInput == false) {
                 System.out.print(INCORRECT_CELL_INPUT_MESSAGE);
             } else {

@@ -14,6 +14,10 @@ public class Cell {
         this.value = value;
     }
 
+    public Cell clone() {
+        return new Cell(coordinates.getX(), coordinates.getY(), value);
+    }
+
     public CellValue getValue() {
         return value;
     }

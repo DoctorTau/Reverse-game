@@ -32,6 +32,9 @@ public class ConsoleInterface extends GameInterface {
     @Override
     public void makeTurn(Player player) {
         Cell cell = player.makeMove(field, input);
+        if (cell == null) {
+            return;
+        }
         cell.setValue(player.getColor());
         field.setCell(cell);
         field.updateFieldAfterMove(cell);
