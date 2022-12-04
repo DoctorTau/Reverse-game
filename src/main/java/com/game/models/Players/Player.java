@@ -3,7 +3,7 @@ package com.game.models.Players;
 import com.game.models.Field.Cell;
 import com.game.models.Field.CellValue;
 import com.game.models.Field.Field;
-import com.game.models.Input.IInputer;
+import com.game.models.Input.IGameInput;
 
 public abstract class Player {
     protected CellValue color;
@@ -15,5 +15,5 @@ public abstract class Player {
         this.field = field;
     }
 
-    abstract public Cell makeMove(Field field, IInputer input);
+    abstract public Cell makeMove(Field field, IGameInput input);
 }

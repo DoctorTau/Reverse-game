@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import com.game.models.Field.Coordinates;
 
-public class ConsoleInputer implements IInputer {
+public class ConsoleInputer implements IGameInput {
     private static final String INPUT_MESSAGE = "Enter cell number: ";
     private static final String INCORRECT_CELL_INPUT_MESSAGE = "Entered cell number is incorrect. Try again: ";
     private Scanner scanner = new Scanner(System.in);

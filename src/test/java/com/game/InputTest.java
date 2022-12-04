@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.game.models.Field.Coordinates;
 import com.game.models.Input.ConsoleInputer;
-import com.game.models.Input.IInputer;
+import com.game.models.Input.IGameInput;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,7 +19,7 @@ public class InputTest {
         String input = "a1";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(0, cords.getX());
         assertEquals(0, cords.getY());
@@ -31,7 +31,7 @@ public class InputTest {
         String input = "a8";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(7, cords.getX());
         assertEquals(0, cords.getY());
@@ -43,7 +43,7 @@ public class InputTest {
         String input = "h1";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(0, cords.getX());
         assertEquals(7, cords.getY());
@@ -55,7 +55,7 @@ public class InputTest {
         String input = "h8";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(7, cords.getX());
         assertEquals(7, cords.getY());
@@ -67,7 +67,7 @@ public class InputTest {
         String input = "a5";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(4, cords.getX());
         assertEquals(0, cords.getY());
@@ -79,7 +79,7 @@ public class InputTest {
         String input = "e1";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(0, cords.getX());
         assertEquals(4, cords.getY());
@@ -91,7 +91,7 @@ public class InputTest {
         String input = "e5";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(4, cords.getX());
         assertEquals(4, cords.getY());
@@ -103,7 +103,7 @@ public class InputTest {
         String input = "e8";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(7, cords.getX());
         assertEquals(4, cords.getY());
@@ -115,7 +115,7 @@ public class InputTest {
         String input = "h5";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        IInputer inputer = new ConsoleInputer();
+        IGameInput inputer = new ConsoleInputer();
         Coordinates cords = inputer.getCell();
         assertEquals(4, cords.getX());
         assertEquals(7, cords.getY());
