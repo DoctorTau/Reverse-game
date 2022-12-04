@@ -6,5 +6,7 @@ import com.game.models.Menu.MainMenu;
 public interface IGameOutput {
     void fieldOutput(Field field);
 
+    void gameScoreOutput(Field field);
+
     void menuOutput(MainMenu menu);
 }

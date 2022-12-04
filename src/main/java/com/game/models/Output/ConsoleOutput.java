@@ -3,6 +3,7 @@ package com.game.models.Output;
 import java.util.ArrayList;
 
 import com.game.models.Field.Cell;
+import com.game.models.Field.CellValue;
 import com.game.models.Field.Field;
 import com.game.models.GameInterface.ConsoleInterface;
 import com.game.models.Menu.MainMenu;
@@ -69,5 +70,13 @@ public class ConsoleOutput implements IGameOutput {
             result += (i + 1) + ". " + menuItems.get(i).getTitle() + "\n";
         }
         return result;
+    }
+
+    @Override
+    public void gameScoreOutput(Field field) {
+        int blackScore = field.getPlayersScore(CellValue.BLACK);
+        int whiteScore = field.getPlayersScore(CellValue.WHITE);
+        String result = "Black score: " + blackScore + "\n" + "White score: " + whiteScore + "\n";
+        System.out.println(result);
     }
 }

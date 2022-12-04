@@ -31,9 +31,5 @@ public abstract class GameInterface {
 
     abstract public GameStage menuLogic();
 
-    abstract public void startGame();
-
-    abstract public void endGame();
-
     abstract public void makeTurn(Player player);
 }

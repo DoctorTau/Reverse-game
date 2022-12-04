@@ -30,18 +30,6 @@ public class ConsoleInterface extends GameInterface {
     }
 
     @Override
-    public void startGame() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void endGame() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void makeTurn(Player player) {
         Cell cell = player.makeMove(field, input);
         cell.setValue(player.getColor());
@@ -52,6 +40,7 @@ public class ConsoleInterface extends GameInterface {
     @Override
     public void showField() {
         output.fieldOutput(field);
+        output.gameScoreOutput(field);
     }
 
 }

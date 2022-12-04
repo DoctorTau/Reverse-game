@@ -2,7 +2,6 @@ package com.game.models;
 
 import com.game.models.Field.CellValue;
 import com.game.models.Field.Field;
-import com.game.models.GameInterface.ConsoleInterface;
 import com.game.models.GameInterface.GameInterface;
 import com.game.models.Menu.MainMenu;
 import com.game.models.Players.AIPlayerEasy;
@@ -26,6 +25,26 @@ public class Game {
         gameInterface.setMenu(mainMenu);
     }
 
+    private void startGame() {
+        this.field = new Field(8);
+        gameInterface.setField(field);
+    }
+
+    private void gameCycle() {
+        while (true) {
+            playerMove(player1);
+            playerMove(player2);
+        }
+    }
+
+    private void playerMove(Player player) {
+        field.markPossibleMoves(player.getColor());
+        if (field.getCellsForNextMove().size() != 0) {
+            gameInterface.showField();
+            gameInterface.makeTurn(player);
+        }
+    }
+
     public void gameProcess() {
         Boolean isGameRunning = true;
         while (isGameRunning) {
@@ -34,29 +53,16 @@ public class Game {
                     stage = gameInterface.menuLogic();
                     break;
                 case GAME_WITH_HUMAN:
-                    field = new Field(8);
+                    startGame();
                     player1 = new HumanPlayer(CellValue.BLACK, field);
                     player2 = new HumanPlayer(CellValue.WHITE, field);
+                    gameCycle();
                     break;
                 case GAME_WITH_AI_EASY:
-                    field = new Field(8);
+                    startGame();
                     player1 = new HumanPlayer(CellValue.BLACK, field);
                     player2 = new AIPlayerEasy(CellValue.WHITE, field);
-                    gameInterface.setField(field);
-                    while (true) {
-                        field.markPossibleMoves(player1.getColor());
-                        gameInterface.showField();
-                        gameInterface.makeTurn(player1);
-                        if (field.isGameOver()) {
-                            break;
-                        }
-                        field.markPossibleMoves(player2.getColor());
-                        gameInterface.showField();
-                        gameInterface.makeTurn(player2);
-                        if (field.isGameOver()) {
-                            break;
-                        }
-                    }
+                    gameCycle();
                     break;
                 case EXIT:
                     isGameRunning = false;

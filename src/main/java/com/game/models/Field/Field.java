@@ -36,6 +36,18 @@ public class Field {
         return field.get(x).get(y);
     }
 
+    public int getPlayersScore(CellValue playerValue) {
+        int score = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (field.get(i).get(j).getValue() == playerValue) {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
+
     public CellCost getCellCost(Cell cell) {
         Coordinates coordinates = cell.getCoordinates();
         if (coordinates.getX() == 0 && coordinates.getY() == 0
