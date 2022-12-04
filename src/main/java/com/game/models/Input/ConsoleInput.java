@@ -73,4 +73,10 @@ public class ConsoleInput implements IGameInput {
         int option = Integer.parseInt(input);
         return menu.getMenuItems().get(option - 1).getMenuItemValue();
     }
+
+    @Override
+    public void backToMenu() {
+        System.out.println("Press any key to continue...");
+        scanner.nextLine();
+    }
 }

@@ -54,6 +54,7 @@ public class ConsoleInterface extends GameInterface {
     @Override
     public void gameOverOutput() {
         output.GameOverOutput(field);
+        input.backToMenu();
     }
 
 }

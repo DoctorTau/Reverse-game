@@ -43,6 +43,8 @@ public class Game {
             }
         }
         gameInterface.gameOverOutput();
+        stage = GameStage.MAIN_MENU;
+        return;
     }
 
     private void playerMove(Player player, Integer runOutOfMovesOutputCounter) {

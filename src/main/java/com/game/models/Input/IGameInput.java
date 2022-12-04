@@ -12,4 +12,6 @@ public interface IGameInput {
     GameStage getMenuOption(MainMenu menu);
 
     Boolean CheckInput(Coordinates cell, Field field);
+
+    void backToMenu();
 }
