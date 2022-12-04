@@ -44,7 +44,7 @@ public class FieldTest {
     @Test
     public void getCellsForNextMoveTest() {
         Field field = new Field(8);
-        Set<Cell> cellsForNextMove = field.getCellsForNextMove(CellValue.BLACK);
+        Set<Cell> cellsForNextMove = field.getCellsForNextMove();
         assertEquals(4, cellsForNextMove.size());
     }
 

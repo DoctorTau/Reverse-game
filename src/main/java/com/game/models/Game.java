@@ -1,8 +1,12 @@
 package com.game.models;
 
+import com.game.models.Field.CellValue;
 import com.game.models.Field.Field;
+import com.game.models.GameInterface.ConsoleInterface;
 import com.game.models.GameInterface.GameInterface;
 import com.game.models.Menu.MainMenu;
+import com.game.models.Players.AIPlayerEasy;
+import com.game.models.Players.HumanPlayer;
 import com.game.models.Players.Player;
 
 public class Game {
@@ -30,8 +34,29 @@ public class Game {
                     stage = gameInterface.menuLogic();
                     break;
                 case GAME_WITH_HUMAN:
+                    field = new Field(8);
+                    player1 = new HumanPlayer(CellValue.BLACK, field);
+                    player2 = new HumanPlayer(CellValue.WHITE, field);
                     break;
                 case GAME_WITH_AI_EASY:
+                    field = new Field(8);
+                    player1 = new HumanPlayer(CellValue.BLACK, field);
+                    player2 = new AIPlayerEasy(CellValue.WHITE, field);
+                    gameInterface.setField(field);
+                    while (true) {
+                        field.markPossibleMoves(player1.getColor());
+                        gameInterface.showField();
+                        gameInterface.makeTurn(player1);
+                        if (field.isGameOver()) {
+                            break;
+                        }
+                        field.markPossibleMoves(player2.getColor());
+                        gameInterface.showField();
+                        gameInterface.makeTurn(player2);
+                        if (field.isGameOver()) {
+                            break;
+                        }
+                    }
                     break;
                 case EXIT:
                     isGameRunning = false;

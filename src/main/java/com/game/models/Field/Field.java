@@ -8,6 +8,7 @@ public class Field {
     int size;
 
     ArrayList<ArrayList<Cell>> field;
+    Set<Cell> possibleMoves = new HashSet<>();
 
     public Field(int size) {
         this.size = size;
@@ -20,6 +21,7 @@ public class Field {
         }
 
         setStartPosition();
+        markPossibleMoves(CellValue.BLACK);
     }
 
     public int getSize() {
@@ -77,16 +79,15 @@ public class Field {
         }
     }
 
-    public Set<Cell> getCellsForNextMove(CellValue value) {
-        CellValue oppositeCellValue = getOppositeCellValue(value);
+    private Set<Cell> getPossibleMoves(CellValue value) {
         Set<Cell> result = new HashSet<Cell>();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Cell cell = field.get(i).get(j);
-                if (cell.getValue() == oppositeCellValue) {
+                if (cell.getValue() == getOppositeCellValue(value)) {
                     Set<Cell> cellSurroundings = getCellSurroundings(cell);
                     leaveOnlyEmptyCells(cellSurroundings);
-                    leaveOnlyChangeColorCells(oppositeCellValue, cell, cellSurroundings);
+                    leaveOnlyChangeColorCells(value, cell, cellSurroundings);
                     result.addAll(cellSurroundings);
                 }
             }
@@ -97,9 +98,7 @@ public class Field {
     private void leaveOnlyChangeColorCells(CellValue oppositeCellValue, Cell cell, Set<Cell> cellSurroundings) {
         Set<Cell> cellsToRemove = new HashSet<Cell>();
         for (Cell cellSurround : cellSurroundings) {
-            Coordinates cellSurroundCoordinates = cellSurround.getCoordinates();
-            Coordinates direction = cell.getCoordinates().subtract(cellSurroundCoordinates);
-            if (!checkIfCellCanBeChanged(cell.getCoordinates(), direction, oppositeCellValue)) {
+            if (getPossiblyRecoloredCells(cellSurround.getCoordinates(), oppositeCellValue).size() == 0) {
                 cellsToRemove.add(cellSurround);
             }
         }
@@ -139,21 +138,12 @@ public class Field {
         if (newCell.getValue() != CellValue.BLACK && newCell.getValue() != CellValue.WHITE) {
             throw new IllegalArgumentException("Invalid cell!");
         }
-        Coordinates cellCoordinates = newCell.getCoordinates();
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                if (i == 0 && j == 0) {
-                    continue;
-                }
-                Coordinates direction = new Coordinates(i, j);
-                recolorIfNeeded(cellCoordinates.add(direction), direction, newCell.getValue());
-            }
-        }
+        recolorCells(newCell);
     }
 
     private Cell getColoredCell(Coordinates coordinates) {
-        if (coordinates.getX() < 0 || coordinates.getX() > 7 || coordinates.getY() < 0
-                || coordinates.getY() > 7) {
+        if (coordinates.getX() < 0 || coordinates.getX() > size - 1 || coordinates.getY() < 0
+                || coordinates.getY() > size - 1) {
             return null;
         }
         Cell cell = getCell(coordinates.getX(), coordinates.getY());
@@ -163,20 +153,8 @@ public class Field {
         return cell;
     }
 
-    private Boolean checkIfCellCanBeChanged(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
-        Cell cell = getColoredCell(currentCoordinates);
-        if (cell == null) {
-            return false;
-        }
-        if (cell.getValue() != color) {
-            return true;
-        }
-        Coordinates nextCoordinates = currentCoordinates.add(direction);
-        return checkIfCellCanBeChanged(nextCoordinates, direction, color);
-    }
-
     public Set<Cell> getPossiblyRecoloredCells(Coordinates coordinates, CellValue color) {
-        CellValue oppositeCellValue = getOppositeCellValue(color);
+        CellValue oppositeColor = getOppositeCellValue(color);
         Set<Cell> result = new HashSet<Cell>();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
@@ -184,38 +162,27 @@ public class Field {
                     continue;
                 }
                 Coordinates direction = new Coordinates(i, j);
-                result.addAll(addRecoloredOnLine(coordinates.add(direction), direction, oppositeCellValue));
+                Set<Cell> cellsOfThisDirection = new HashSet<Cell>();
+                Cell directionalCell = getColoredCell(coordinates.add(direction));
+                if (directionalCell == null) {
+                    continue;
+                }
+                while (directionalCell != null && directionalCell.getValue() == oppositeColor) {
+                    cellsOfThisDirection.add(directionalCell);
+                    directionalCell = getColoredCell(directionalCell.getCoordinates().add(direction));
+                }
+                if (directionalCell != null && directionalCell.getValue() == color) {
+                    result.addAll(cellsOfThisDirection);
+                }
             }
-        }
-        result.remove(getCell(coordinates.getX(), coordinates.getY()));
-        return result;
-    }
-
-    private Set<Cell> addRecoloredOnLine(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
-        Set<Cell> result = new HashSet<Cell>();
-        Cell cell = getColoredCell(currentCoordinates);
-        if (cell == null) {
-            return result;
-        }
-        if (checkIfCellCanBeChanged(currentCoordinates, direction, color)) {
-            if (cell.getValue() == color) {
-                result.add(cell);
-            }
-            Coordinates nextCoordinates = currentCoordinates.add(direction);
-            result.addAll(addRecoloredOnLine(nextCoordinates, direction, color));
         }
         return result;
     }
 
-    private void recolorIfNeeded(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
-        Cell cell = getColoredCell(currentCoordinates);
-        if (cell == null) {
-            return;
-        }
-        if (checkIfCellCanBeChanged(currentCoordinates, direction, color)) {
-            cell.setValue(color);
-            Coordinates nextCoordinates = currentCoordinates.add(direction);
-            recolorIfNeeded(nextCoordinates, direction, color);
+    private void recolorCells(Cell setCell) {
+        Set<Cell> cellsToRecolor = getPossiblyRecoloredCells(setCell.getCoordinates(), setCell.getValue());
+        for (Cell cell : cellsToRecolor) {
+            cell.setValue(setCell.getValue());
         }
     }
 
@@ -224,5 +191,35 @@ public class Field {
         field.get(4).get(4).setValue(CellValue.WHITE);
         field.get(3).get(4).setValue(CellValue.BLACK);
         field.get(4).get(3).setValue(CellValue.BLACK);
+    }
+
+    public boolean isGameOver() {
+        return false;
+    }
+
+    public void setCell(Cell cell) {
+        Coordinates coordinates = cell.getCoordinates();
+        getCell(coordinates.getX(), coordinates.getY()).setValue(cell.getValue());
+    }
+
+    public void markPossibleMoves(CellValue value) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Cell cell = field.get(i).get(j);
+                if (cell.getValue() == CellValue.POSSIBLE_MOVE) {
+                    cell.setValue(CellValue.EMPTY);
+                }
+            }
+        }
+        Set<Cell> cellsForNextMove = getPossibleMoves(value);
+        possibleMoves.clear();
+        for (Cell cell : cellsForNextMove) {
+            possibleMoves.add(cell);
+            cell.setValue(CellValue.POSSIBLE_MOVE);
+        }
+    }
+
+    public Set<Cell> getCellsForNextMove() {
+        return possibleMoves;
     }
 }

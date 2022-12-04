@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.game.models.GameStage;
 import com.game.models.Field.Coordinates;
+import com.game.models.GameInterface.ConsoleInterface;
 import com.game.models.Menu.MainMenu;
 
 public class ConsoleInput implements IGameInput {

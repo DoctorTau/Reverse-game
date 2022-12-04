@@ -16,4 +16,20 @@ public abstract class Player {
     }
 
     abstract public Cell makeMove(Field field, IGameInput input);
+
+    public CellValue getColor() {
+        return color;
+    }
+
+    public void setColor(CellValue color) {
+        this.color = color;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

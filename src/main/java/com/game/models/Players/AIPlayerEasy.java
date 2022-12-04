@@ -35,7 +35,7 @@ public class AIPlayerEasy extends Player {
 
     @Override
     public Cell makeMove(Field field, IGameInput input) {
-        Set<Cell> possibleMoves = field.getCellsForNextMove(color);
+        Set<Cell> possibleMoves = field.getCellsForNextMove();
         Map<Cell, Double> possibleMovesWithScores = new HashMap<Cell, Double>();
         for (Cell cell : possibleMoves) {
             possibleMovesWithScores.put(cell, getScoreForCell(cell, field));

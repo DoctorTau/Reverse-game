@@ -1,6 +1,7 @@
 package com.game.models.GameInterface;
 
 import com.game.models.GameStage;
+import com.game.models.Field.Cell;
 import com.game.models.Field.Field;
 import com.game.models.Input.ConsoleInput;
 import com.game.models.Menu.MainMenu;
@@ -42,8 +43,15 @@ public class ConsoleInterface extends GameInterface {
 
     @Override
     public void makeTurn(Player player) {
-        // TODO Auto-generated method stub
+        Cell cell = player.makeMove(field, input);
+        cell.setValue(player.getColor());
+        field.setCell(cell);
+        field.updateFieldAfterMove(cell);
+    }
 
+    @Override
+    public void showField() {
+        output.fieldOutput(field);
     }
 
 }

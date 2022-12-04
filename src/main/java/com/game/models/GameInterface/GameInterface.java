@@ -27,6 +27,8 @@ public abstract class GameInterface {
         this.menu = menu;
     }
 
+    abstract public void showField();
+
     abstract public GameStage menuLogic();
 
     abstract public void startGame();
