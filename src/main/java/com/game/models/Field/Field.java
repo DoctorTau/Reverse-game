@@ -34,6 +34,21 @@ public class Field {
         return field.get(x).get(y);
     }
 
+    public CellCost getCellCost(Cell cell) {
+        Coordinates coordinates = cell.getCoordinates();
+        if (coordinates.getX() == 0 && coordinates.getY() == 0
+                || coordinates.getX() == 0 && coordinates.getY() == size - 1
+                || coordinates.getX() == size - 1 && coordinates.getY() == 0
+                || coordinates.getX() == size - 1 && coordinates.getY() == size - 1) {
+            return CellCost.ANGLE;
+        }
+        if (coordinates.getX() == 0 || coordinates.getX() == size - 1 || coordinates.getY() == 0
+                || coordinates.getY() == size - 1) {
+            return CellCost.BORDER;
+        }
+        return CellCost.SIMPLE;
+    }
+
     public void setValue(int x, int y, CellValue value) {
         if (x < 0 || x > 7 || y < 0 || y > 7) {
             throw new IllegalArgumentException("Invalid coordinates!");
