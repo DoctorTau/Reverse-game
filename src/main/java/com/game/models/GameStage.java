@@ -2,6 +2,8 @@ package com.game.models;
 
 public enum GameStage {
     MAIN_MENU,
-    GAME,
-    GAME_OVER
+    GAME_WITH_HUMAN,
+    GAME_WITH_AI_EASY,
+    GAME_WITH_AI_HARD,
+    EXIT
 }

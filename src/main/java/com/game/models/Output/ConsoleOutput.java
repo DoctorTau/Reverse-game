@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.game.models.Field.Cell;
 import com.game.models.Field.Field;
+import com.game.models.GameInterface.ConsoleInterface;
 import com.game.models.Menu.MainMenu;
 import com.game.models.Menu.MenuItem;
 
@@ -12,13 +13,8 @@ public class ConsoleOutput implements IGameOutput {
     @Override
     public void fieldOutput(Field field) {
         String fieldString = getFieldString(field);
-        clearConsole();
+        ConsoleInterface.clearConsole();
         System.out.println(fieldString);
-    }
-
-    public void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
     public String getFieldString(Field field) {
@@ -61,6 +57,7 @@ public class ConsoleOutput implements IGameOutput {
 
     @Override
     public void menuOutput(MainMenu menu) {
+        ConsoleInterface.clearConsole();
         String result = getMenuAsString(menu);
         System.out.println(result);
     }
