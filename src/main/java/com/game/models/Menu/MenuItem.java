@@ -25,7 +25,6 @@ public class MenuItem {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem("Game with human", GameStage.GAME_WITH_HUMAN));
         menuItems.add(new MenuItem("Game with AI (easy)", GameStage.GAME_WITH_AI_EASY));
-        menuItems.add(new MenuItem("Game with AI (hard)", GameStage.GAME_WITH_AI_HARD));
         menuItems.add(new MenuItem("Exit", GameStage.EXIT));
         return menuItems;
     }
