@@ -31,16 +31,27 @@ public class Game {
     }
 
     private void gameCycle() {
+        Integer runOutOfMovesOutputCounter = 0;
         while (true) {
+            runOutOfMovesOutputCounter = 0;
             field.saveFieldToHistory();
-            playerMove(player1);
+            playerMove(player1, runOutOfMovesOutputCounter);
             field.saveFieldToHistory();
-            playerMove(player2);
+            playerMove(player2, runOutOfMovesOutputCounter);
+            if (runOutOfMovesOutputCounter == 2) {
+                break;
+            }
         }
+        gameInterface.gameOverOutput();
     }
 
-    private void playerMove(Player player) {
+    private void playerMove(Player player, Integer runOutOfMovesOutputCounter) {
         field.markPossibleMoves(player.getColor());
+        if (field.getCellsForNextMove().size() == 0) {
+            gameInterface.RunOutOfMoves(player);
+            runOutOfMovesOutputCounter++;
+            return;
+        }
         if (field.getCellsForNextMove().size() != 0) {
             gameInterface.showField();
             gameInterface.makeTurn(player);

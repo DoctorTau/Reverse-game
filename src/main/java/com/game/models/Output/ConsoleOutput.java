@@ -8,9 +8,9 @@ import com.game.models.Field.Field;
 import com.game.models.GameInterface.ConsoleInterface;
 import com.game.models.Menu.MainMenu;
 import com.game.models.Menu.MenuItem;
+import com.game.models.Players.Player;
 
 public class ConsoleOutput implements IGameOutput {
-
     @Override
     public void fieldOutput(Field field) {
         String fieldString = getFieldString(field);
@@ -77,6 +77,27 @@ public class ConsoleOutput implements IGameOutput {
         int blackScore = field.getPlayersScore(CellValue.BLACK);
         int whiteScore = field.getPlayersScore(CellValue.WHITE);
         String result = "Black score: " + blackScore + "\n" + "White score: " + whiteScore + "\n";
+        System.out.println(result);
+    }
+
+    @Override
+    public void runOutOfMovesOutput(Player player) {
+        String result = "Player " + player.getColor() + " has no moves left. Game over.\n";
+        System.out.println(result);
+    }
+
+    @Override
+    public void GameOverOutput(Field field) {
+        int blackScore = field.getPlayersScore(CellValue.BLACK);
+        int whiteScore = field.getPlayersScore(CellValue.WHITE);
+        String result = "Game over. Black score: " + blackScore + "\n" + "White score: " + whiteScore + "\n";
+        if (blackScore > whiteScore) {
+            result += "Black wins!";
+        } else if (whiteScore > blackScore) {
+            result += "White wins!";
+        } else {
+            result += "Draw!";
+        }
         System.out.println(result);
     }
 }

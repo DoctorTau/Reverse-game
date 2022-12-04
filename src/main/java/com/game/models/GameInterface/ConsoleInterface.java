@@ -46,4 +46,14 @@ public class ConsoleInterface extends GameInterface {
         output.gameScoreOutput(field);
     }
 
+    @Override
+    public void RunOutOfMoves(Player player) {
+        output.runOutOfMovesOutput(player);
+    }
+
+    @Override
+    public void gameOverOutput() {
+        output.GameOverOutput(field);
+    }
+
 }

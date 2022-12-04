@@ -32,4 +32,9 @@ public abstract class GameInterface {
     abstract public GameStage menuLogic();
 
     abstract public void makeTurn(Player player);
+
+    abstract public void RunOutOfMoves(Player player);
+
+    abstract public void gameOverOutput();
+
 }
