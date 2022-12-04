@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.game.models.Field.Cell;
 import com.game.models.Field.CellValue;
+import com.game.models.Field.Coordinates;
 import com.game.models.Field.Field;
 
 public class FieldTest {
@@ -45,5 +46,19 @@ public class FieldTest {
         Field field = new Field(8);
         Set<Cell> cellsForNextMove = field.getCellsForNextMove(CellValue.BLACK);
         assertEquals(4, cellsForNextMove.size());
+    }
+
+    @Test
+    public void getRecoloredCells_2_2_Black_Expected_0_Cells() {
+        Field field = new Field(8);
+        Set<Cell> recoloredCells = field.getPossiblyRecoloredCells(new Coordinates(2, 2), CellValue.BLACK);
+        assertEquals(0, recoloredCells.size());
+    }
+
+    @Test
+    public void getRecoloredCells_2_3_Black_Expected_1_Cells() {
+        Field field = new Field(8);
+        Set<Cell> recoloredCells = field.getPossiblyRecoloredCells(new Coordinates(2, 3), CellValue.BLACK);
+        assertEquals(1, recoloredCells.size());
     }
 }

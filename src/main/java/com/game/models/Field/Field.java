@@ -160,6 +160,38 @@ public class Field {
         return checkIfCellCanBeChanged(nextCoordinates, direction, color);
     }
 
+    public Set<Cell> getPossiblyRecoloredCells(Coordinates coordinates, CellValue color) {
+        CellValue oppositeCellValue = getOppositeCellValue(color);
+        Set<Cell> result = new HashSet<Cell>();
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                Coordinates direction = new Coordinates(i, j);
+                result.addAll(addRecoloredOnLine(coordinates.add(direction), direction, oppositeCellValue));
+            }
+        }
+        result.remove(getCell(coordinates.getX(), coordinates.getY()));
+        return result;
+    }
+
+    private Set<Cell> addRecoloredOnLine(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
+        Set<Cell> result = new HashSet<Cell>();
+        Cell cell = getColoredCell(currentCoordinates);
+        if (cell == null) {
+            return result;
+        }
+        if (checkIfCellCanBeChanged(currentCoordinates, direction, color)) {
+            if (cell.getValue() == color) {
+                result.add(cell);
+            }
+            Coordinates nextCoordinates = currentCoordinates.add(direction);
+            result.addAll(addRecoloredOnLine(nextCoordinates, direction, color));
+        }
+        return result;
+    }
+
     private void recolorIfNeeded(Coordinates currentCoordinates, Coordinates direction, CellValue color) {
         Cell cell = getColoredCell(currentCoordinates);
         if (cell == null) {
