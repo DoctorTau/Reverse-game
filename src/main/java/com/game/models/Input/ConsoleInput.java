@@ -3,8 +3,10 @@ package com.game.models.Input;
 import java.util.Scanner;
 
 import com.game.models.GameStage;
+import com.game.models.Field.Cell;
+import com.game.models.Field.CellValue;
 import com.game.models.Field.Coordinates;
-import com.game.models.GameInterface.ConsoleInterface;
+import com.game.models.Field.Field;
 import com.game.models.Menu.MainMenu;
 
 public class ConsoleInput implements IGameInput {
@@ -15,14 +17,14 @@ public class ConsoleInput implements IGameInput {
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public Coordinates getCell() {
+    public Cell getCell(Field field) {
         System.out.print(INPUT_CELL_MESSAGE);
         Boolean isCorrectInput = false;
-        Coordinates cell = null;
+        Coordinates cellCoordinates = null;
         while (isCorrectInput == false) {
             String input = scanner.nextLine();
-            cell = parseInput(input);
-            isCorrectInput = CheckInput(cell);
+            cellCoordinates = parseInput(input);
+            isCorrectInput = CheckInput(cellCoordinates, field);
             if (isCorrectInput == false) {
                 System.out.print(INCORRECT_CELL_INPUT_MESSAGE);
             } else {
@@ -30,7 +32,7 @@ public class ConsoleInput implements IGameInput {
             }
         }
 
-        return cell;
+        return field.getCell(cellCoordinates.getX(), cellCoordinates.getY());
     }
 
     private Coordinates parseInput(String input) {
@@ -41,8 +43,11 @@ public class ConsoleInput implements IGameInput {
     }
 
     @Override
-    public Boolean CheckInput(Coordinates cell) {
+    public Boolean CheckInput(Coordinates cell, Field field) {
         if (cell.getX() < 0 || cell.getX() > 7 || cell.getY() < 0 || cell.getY() > 7) {
+            return false;
+        }
+        if (field.getCell(cell.getX(), cell.getY()).getValue() != CellValue.POSSIBLE_MOVE) {
             return false;
         }
         return true;
